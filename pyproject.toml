@@ -1,0 +1,92 @@
+[tool.poetry]
+name = "click_loguru"
+version = "0.1.0"
+description = "Configure loguru logging for use with click."
+authors = ["Joel Berendzen <joel@generisbio.com>"]
+license = "BSD-3-Clause"
+readme = "README.rst"
+homepage = "https://github.com/legumeinfo/bionorm"
+documentation = "https://bionorm.readthedocs.org"
+keywords = [
+    "science",
+    "biology",
+    "bioinformatics",
+    "genomics",
+    "data science",
+    "DNA",
+    "protein",
+    "sequences",
+    "FASTA",
+    "GFF",
+    "curation",
+    "wrangling"
+    ]
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Environment :: Console',
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: BSD License',
+    'Natural Language :: English',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Topic :: Scientific/Engineering :: Bio-Informatics'
+    ]
+
+
+[tool.poetry.dependencies]
+python = "^3.6.1"
+click = "^7.1.2"
+loguru = "^0.4.1"
+flynt = "^0.46.1"
+
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+pytest-cov = "^2.8.1"
+black = {version = "^19.10b0", allow-prereleases = true}
+pre-commit = "^2.3.0"
+pydocstyle = "^5.0.2"
+isort = {extras = ["pyproject"], version = "^4.3.21"}
+
+[tool.black]
+line-length = 120
+target-version = ['py36', 'py37', 'py38']
+include = '\.pyi?$'
+exclude = '''
+/(
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | \.tests
+  | _build
+  | buck-out
+  | build
+  | dist
+  # The following are specific to Black, you probably don't want those.
+  | blib2to3
+  | tests/
+  | profiling
+)/
+'''
+
+[tool.isort]
+force_single_line = true
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 120
+import_heading_stdlib = "standard library imports"
+import_heading_thirdparty = "third-party imports"
+import_heading_firstparty = "first-party imports"
+import_heading_localfolder = "module imports"
+known_standard_library = "pkg_resources"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

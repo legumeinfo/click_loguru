@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-# standard library imports
-from pkg_resources import iter_entry_points
+"""An extremely simple command-line application."""
 
 # third-party imports
 import click
@@ -15,7 +14,9 @@ VERSION = "0.0.1"
 NAME = "simple"
 
 # define the CLI
-click_loguru = ClickLoguru(NAME, VERSION, retention=LOG_FILE_RETENTION, log_dir_parent="tests/data/")
+click_loguru = ClickLoguru(
+    NAME, VERSION, retention=LOG_FILE_RETENTION, log_dir_parent="tests/data/"
+)
 
 
 @click_loguru.logging_options
@@ -23,11 +24,8 @@ click_loguru = ClickLoguru(NAME, VERSION, retention=LOG_FILE_RETENTION, log_dir_
 @click_loguru.stash_subcommand()
 @click.version_option(version=VERSION, prog_name=NAME)
 def cli(verbose, quiet, logfile):
-    """simple -- a simple cli function with logging by loguru.
-
-
-    """
-    pass
+    """simple -- a simple cli function with logging by loguru."""
+    print(f"verbose: {verbose} quiet: {quiet} logfile: {logfile}")
 
 
 # test commands from click_loguru itself
@@ -45,4 +43,4 @@ def simple():
 
 
 if __name__ == "__main__":
-    cli()
+    cli(False, False, False)

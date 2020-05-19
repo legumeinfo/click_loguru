@@ -9,22 +9,22 @@ from pathlib import Path
 
 # third-party imports
 from click import option
-from click import get_current_context as ctx
+from click import get_current_context as cur_ctx
 from loguru import logger
 
 # global constants
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 STARTTIME = datetime.now()
 DEFAULT_STDERR_LOG_LEVEL = "INFO"
 DEFAULT_FILE_LOG_LEVEL = "DEBUG"
 NO_LEVEL_BELOW = 30  # Don't print level for messages below this level
 
 
-class LogState(object):
+class LogState:
     """Click context object for verbosity, quiet, and logfile info."""
 
     def __init__(self):
-        "Initialize logging object with default values."
+        """Initialize logging object with default values."""
         self.verbose = False
         self.quiet = False
         self.logfile = True
@@ -47,8 +47,7 @@ class LogState(object):
         return retstr
 
 
-class ClickLoguru(object):
-
+class ClickLoguru:
     """Creates decorators for use with click to control loguru logging ."""
 
     def __init__(
@@ -68,23 +67,22 @@ class ClickLoguru(object):
         self.log_dir_parent = log_dir_parent
         self.file_log_level = file_log_level
         self.stderr_log_level = stderr_log_level
-        if stderr_format_func == None:
+        if stderr_format_func is None:
 
             def format_func(msgdict):
-                """This function is used for level-sensitive formatting."""
+                """Do level-sensitive formatting."""
                 if msgdict["level"].no < NO_LEVEL_BELOW:
                     return "<level>{message}</level>\n"
-                else:
-                    return "<level>{level}</level>: <level>{message}</level>\n"
+                return "<level>{level}</level>: <level>{message}</level>\n"
 
             self.stderr_format_func = format_func
         else:
             self.stderr_format_func = stderr_format_func
 
-    def _verbose_option(self, f):
+    def _verbose_option(self, user_func):
         """Define verbose option."""
 
-        def callback(ctx, param, value):
+        def callback(ctx, unused_param, value):
             """Set verbose state."""
             state = ctx.ensure_object(LogState)
             state.verbose = value
@@ -98,12 +96,12 @@ class ClickLoguru(object):
             default=False,
             help="Log debugging info to stderr.",
             callback=callback,
-        )(f)
+        )(user_func)
 
-    def _quiet_option(self, f):
+    def _quiet_option(self, user_func):
         """Define quiet option."""
 
-        def callback(ctx, param, value):
+        def callback(ctx, unused_param, value):
             """Set quiet state."""
             state = ctx.ensure_object(LogState)
             state.quiet = value
@@ -117,12 +115,12 @@ class ClickLoguru(object):
             default=False,
             help="Suppress info to stderr.",
             callback=callback,
-        )(f)
+        )(user_func)
 
-    def _logfile_option(self, f):
+    def _logfile_option(self, user_func):
         """Define logfile option."""
 
-        def callback(ctx, param, value):
+        def callback(ctx, unused_param, value):
             """Set logfile state."""
             state = ctx.ensure_object(LogState)
             state.logfile = value
@@ -133,24 +131,24 @@ class ClickLoguru(object):
             is_flag=True,
             show_default=True,
             default=True,
-            help=f"Log to file.",
+            help="Log to file.",
             callback=callback,
-        )(f)
+        )(user_func)
 
-    def logging_options(self, f):
+    def logging_options(self, user_func):
         """Set all logging options."""
-        f = self._verbose_option(f)
-        f = self._quiet_option(f)
-        f = self._logfile_option(f)
-        return f
+        user_func = self._verbose_option(user_func)
+        user_func = self._quiet_option(user_func)
+        user_func = self._logfile_option(user_func)
+        return user_func
 
     def init_logger(self, log_dir_parent=None, logfile=True):
         """Log to stderr and to logfile at different levels."""
 
-        def decorator(f):
-            @functools.wraps(f)
+        def decorator(user_func):
+            @functools.wraps(user_func)
             def wrapper(*args, **kwargs):
-                state = ctx().find_object(LogState)
+                state = cur_ctx().find_object(LogState)
                 # get the verbose/quiet levels from context
                 if state.verbose:
                     log_level = "DEBUG"
@@ -159,18 +157,20 @@ class ClickLoguru(object):
                 else:
                     log_level = self.stderr_log_level
                 logger.remove()  # remove existing default logger
-                logger.add(sys.stderr, level=log_level, format=self.stderr_format_func)
+                logger.add(
+                    sys.stderr, level=log_level, format=self.stderr_format_func
+                )
                 if logfile and state.logfile:  # start a log file
                     # If a subcommand was used, log to a file in the
                     # logs/ subdirectory with the subcommand in the file name.
                     if log_dir_parent is not None:
                         self.log_dir_parent = log_dir_parent
-                    if self.log_dir_parent == None:
+                    if self.log_dir_parent is None:
                         log_dir_parent_path = Path(".")
                     else:
                         log_dir_parent_path = Path(self.log_dir_parent)
                     log_dir_path = log_dir_parent_path / "logs"
-                    subcommand = ctx().invoked_subcommand
+                    subcommand = cur_ctx().invoked_subcommand
                     if subcommand is None:
                         subcommand = state.subcommand
                     if subcommand is not None:
@@ -179,24 +179,41 @@ class ClickLoguru(object):
                         logfile_prefix = f"{self.name}"
                     if log_dir_path.exists():
                         log_numbers = [
-                            f.name[len(logfile_prefix) + 1 : -4] for f in log_dir_path.glob(logfile_prefix + "_*.log")
+                            f.name[len(logfile_prefix) + 1 : -4]
+                            for f in log_dir_path.glob(
+                                logfile_prefix + "_*.log"
+                            )
                         ]
-                        log_number_ints = sorted([int(n) for n in log_numbers if n.isnumeric()])
-                        if len(log_number_ints):
+                        log_number_ints = sorted(
+                            [int(n) for n in log_numbers if n.isnumeric()]
+                        )
+                        if len(log_number_ints) > 0:
                             log_number = log_number_ints[-1] + 1
-                            if self.retention is not None and len(log_number_ints) > self.retention:
-                                for remove in log_number_ints[: len(log_number_ints) - self.retention]:
-                                    (log_dir_path / f"{logfile_prefix}_{remove}.log").unlink()
+                            if (
+                                self.retention is not None
+                                and len(log_number_ints) > self.retention
+                            ):
+                                for remove in log_number_ints[
+                                    : len(log_number_ints) - self.retention
+                                ]:
+                                    (
+                                        log_dir_path
+                                        / f"{logfile_prefix}_{remove}.log"
+                                    ).unlink()
                         else:
                             log_number = 0
                     else:
                         log_number = 0
-                    logfile_path = log_dir_path / f"{logfile_prefix}_{log_number}.log"
-                    state.logfile_handler_id = logger.add(str(logfile_path), level=self.file_log_level)
+                    logfile_path = (
+                        log_dir_path / f"{logfile_prefix}_{log_number}.log"
+                    )
+                    state.logfile_handler_id = logger.add(
+                        str(logfile_path), level=self.file_log_level
+                    )
                 logger.debug(f'Command line: "{" ".join(sys.argv)}"')
                 logger.debug(f"{self.name} version {self.version}")
                 logger.debug(f"Run started at {str(STARTTIME)[:-7]}")
-                return f(*args, **kwargs)
+                return user_func(*args, **kwargs)
 
             return wrapper
 
@@ -205,11 +222,13 @@ class ClickLoguru(object):
     def log_elapsed_time(self):
         """Log the elapsed time for command."""
 
-        def decorator(f):
-            @functools.wraps(f)
+        def decorator(user_func):
+            @functools.wraps(user_func)
             def wrapper(*args, **kwargs):
-                returnobj = f(*args, **kwargs)
-                logger.debug(f"Elapsed time is {str(datetime.now() - STARTTIME)[:-7]}")
+                returnobj = user_func(*args, **kwargs)
+                logger.debug(
+                    f"Elapsed time is {str(datetime.now() - STARTTIME)[:-7]}"
+                )
                 return returnobj
 
             return wrapper
@@ -217,14 +236,14 @@ class ClickLoguru(object):
         return decorator
 
     def stash_subcommand(self):
-        """Save the subcommand to the context object"""
+        """Save the subcommand to the context object."""
 
-        def decorator(f):
-            @functools.wraps(f)
+        def decorator(user_func):
+            @functools.wraps(user_func)
             def wrapper(*args, **kwargs):
-                state = ctx().find_object(LogState)
-                state.subcommand = ctx().invoked_subcommand
-                return f(*args, **kwargs)
+                state = cur_ctx().find_object(LogState)
+                state.subcommand = cur_ctx().invoked_subcommand
+                return user_func(*args, **kwargs)
 
             return wrapper
 
@@ -252,6 +271,6 @@ class ClickLoguru(object):
         @self.init_logger(logfile=False)
         def show_loguru_context():
             """Print the global context dictionary."""
-            print(ctx().find_object(LogState))
+            print(cur_ctx().find_object(LogState))
 
         return show_loguru_context

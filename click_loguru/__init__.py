@@ -13,7 +13,7 @@ from click import get_current_context as cur_ctx
 from loguru import logger
 
 # global constants
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 STARTTIME = datetime.now()
 DEFAULT_STDERR_LOG_LEVEL = "INFO"
 DEFAULT_FILE_LOG_LEVEL = "DEBUG"
@@ -249,28 +249,6 @@ class ClickLoguru:
 
         return decorator
 
-    def test_log_func(self, cli):
-        """Define the test_logging command."""
-
-        @cli.command()
-        @self.init_logger()
-        @self.log_elapsed_time()
-        def test_logging():
-            """Log at different severity levels."""
-            logger.debug("debug message")
-            logger.info("info message")
-            logger.warning("warning message")
-            logger.error("error message")
-
-        return test_logging
-
-    def show_context_func(self, cli):
-        """Define the show_context_dict command."""
-
-        @cli.command()
-        @self.init_logger(logfile=False)
-        def show_loguru_context():
-            """Print the global context dictionary."""
-            print(cur_ctx().find_object(LogState))
-
-        return show_loguru_context
+    def get_global_options(self):
+        """Return dictionary of global options."""
+        return cur_ctx().find_object(LogState)

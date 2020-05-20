@@ -65,3 +65,7 @@ src/
 # coverage data #
 #################
 .coverage
+
+# nox environments#
+###################
+.nox

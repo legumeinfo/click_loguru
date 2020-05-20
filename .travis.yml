@@ -11,7 +11,7 @@ before_install:
 install:
   - poetry install -v
 script:
-  - poetry run pytest -s
+  - poetry run nox
 after_success:
   - bash <(curl -s https://codecov.io/bash) -X gcov
 before_deploy:

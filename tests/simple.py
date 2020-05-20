@@ -10,7 +10,7 @@ from click_loguru import ClickLoguru
 
 # global constants
 LOG_FILE_RETENTION = 3
-VERSION = "0.0.1"
+VERSION = "0.1.0"
 NAME = "simple"
 
 # define the CLI
@@ -25,22 +25,23 @@ click_loguru = ClickLoguru(
 @click.version_option(version=VERSION, prog_name=NAME)
 def cli(verbose, quiet, logfile):
     """simple -- a simple cli function with logging by loguru."""
-    print(f"verbose: {verbose} quiet: {quiet} logfile: {logfile}")
+    unused_str = f"verbose: {verbose} quiet: {quiet} logfile: {logfile}"
 
 
-# test commands from click_loguru itself
-test_logging = click_loguru.test_log_func(cli)
-show_loguru_context = click_loguru.show_context_func(cli)
+@cli.command()
+@click_loguru.init_logger()
+@click_loguru.log_elapsed_time()
+def test_logging():
+    """Log at different severity levels."""
+    logger.debug("debug message")
+    logger.info("info message")
+    logger.warning("warning message")
+    logger.error("error message")
 
 
 @cli.command()
 @click_loguru.init_logger(logfile=False)
-def simple():
-    "The simplest of logging functions."
-    logger.info("Here is some info.")
-    logger.warning("Here is a warning.")
-    logger.error("It's an error!")
-
-
-if __name__ == "__main__":
-    cli(False, False, False)
+def quiet_value():
+    "Print value of global quiet option."
+    options = click_loguru.get_global_options()
+    print(f"{options.quiet:d}", end="")

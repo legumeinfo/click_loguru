@@ -24,6 +24,18 @@ def test_logging(tmp_path):
     assert len(list(Path("tests/data/logs").glob("*"))) == 1
 
 
+def test_quiet(tmp_path):
+    """Test query of global quiet option."""
+    runner = CliRunner()
+    os.chdir(tmp_path)
+    result = runner.invoke(cli, ["quiet-value"])
+    assert result.exit_code == 0
+    assert bool(int(result.output)) == False
+    result = runner.invoke(cli, ["-q", "quiet-value"])
+    assert result.exit_code == 0
+    assert bool(int(result.output)) == True
+
+
 def test_retention(tmp_path):
     """Test keeping copies of the log file."""
     runner = CliRunner()

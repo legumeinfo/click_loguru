@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "click_loguru"
-version = "0.2.0"
+version = "0.2.1"
 description = "Configure loguru logging for use with click."
 authors = ["Joel Berendzen <joel@generisbio.com>"]
 license = "BSD-3-Clause"

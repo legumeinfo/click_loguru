@@ -5,8 +5,8 @@ description = "Configure loguru logging for use with click."
 authors = ["Joel Berendzen <joel@generisbio.com>"]
 license = "BSD-3-Clause"
 readme = "README.rst"
-homepage = "https://github.com/legumeinfo/bionorm"
-documentation = "https://bionorm.readthedocs.org"
+homepage = "https://github.com/legumeinfo/click_loguru"
+documentation = "https://click_loguru.readthedocs.org"
 keywords = [
  "science",
     "biology",

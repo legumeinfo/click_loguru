@@ -1,7 +1,43 @@
 click_loguru
 ============
-``click_loguru`` initializes loguru for use with a click command.
-See the tests for usage examples.
+``click_loguru`` initializes `loguru <https://github.com/Delgan/loguru/>`_
+for logging to stderr and (optionally) a file for use
+with a `click <https://click.palletsprojects.com/>`_ CLI.
+
+If your click application uses subcommands (via ``@click.group()``),
+log files will include the subcommand in the name.
+Log files are numbered, with a retention policy specified.  Log files can be enabled or disabled
+per-subcommand and written to a subdirectory your application specifies.  
+
+Global options control verbose, quiet, and logfile creation.  The values of these global
+options are accessible from your application.
+
+Instantiation is from a single class, ``ClickLoguru``, with the arguments of the name and version
+of your application.  Optional keyworded arguments are the integer ``retention`` to set the number
+of log files retained per-application to values other than the default (4), ``log_dir_parent`` to
+set the location of the log file directory other than its default value of ``./logs``,i
+``file_log_level`` to set the level of logging to the file other than the default of ``DEBUG``,
+and ``stderr_log_level`` which by default is set to ``INFO``.
+
+The ``logging_options`` method returns a decorator to be used for the CLI method which defines
+the global options that allows control of ``quiet``, ``verbose``, and ``logfile`` booleans.
+
+The ``stash_subcommand`` method returns a decorator to be used for the CLI method for applications
+which define subcommands.
+
+The ``init_logger`` method returns a decorator which must be used for each subcommand.   It allows
+override of the default ``log_dir_parent`` established at instantiation, as well as turning
+off file logging for that command by setting ``logfile`` to ``False``.
+
+The ``log_elapsed_time`` method returns a decorator which causes the elapsed time for the subcommand
+to be emitted at the ``DEBUG`` level.
+
+The ``get_global_options`` method returns the context object associated with the global options.
+The context object is printable.  The attributes of the context object are the booleans ``verbose``,
+``quiet``, and ``logfile``, the string ``subcommand`` showing the subcommand that was invoked,
+and ``logfile_handler_id`` if your code wishes to manipulate the handler directly.
+
+See the file ``tests/__init__.py`` for usage examples.
 
 Prerequisites
 -------------
@@ -47,7 +83,7 @@ Project Status
     :target:  https://travis-ci.org/legumeinfo/click_loguru
     :alt: Travis CI
 
-.. |codacy| image:: https://api.codacy.com/project/badge/Grade/b23fc0c167fc4660bb649320e14dac7f
+.. |codacy| image:: https://api.codacy.com/project/badge/Grade/6ee5771afe014cffbb32a2f79cf17fff
     :target: https://www.codacy.com/gh/legumeinfo/click_loguru?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=legumeinfo/click_loguru&amp;utm_campaign=Badge_Grade
     :alt: Codacy.io grade
 

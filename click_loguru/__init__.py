@@ -13,42 +13,41 @@ from click import get_current_context as cur_ctx
 from loguru import logger
 
 # global constants
-__version__ = "0.2.1"
+__version__ = "0.3.0"
 STARTTIME = datetime.now()
 DEFAULT_STDERR_LOG_LEVEL = "INFO"
 DEFAULT_FILE_LOG_LEVEL = "DEBUG"
 NO_LEVEL_BELOW = 30  # Don't print level for messages below this level
 
 
-class LogState:
-    """Click context object for verbosity, quiet, and logfile info."""
-
-    def __init__(self):
-        """Initialize logging object with default values."""
-        self.verbose = False
-        self.quiet = False
-        self.logfile = True
-        self.logfile_handler_id = None
-        self.subcommand = None
-
-    def __repr__(self):
-        """Print logging state variables."""
-        retstr = f"verbose: {self.verbose}\n"
-        retstr += f"quiet: {self.quiet}\n"
-        retstr += f"logfile: {self.logfile}\n"
-        if self.subcommand is None:
-            retstr += "No subcommand.\n"
-        else:
-            retstr += f"Subcommand is {self.subcommand}.\n"
-        if self.logfile_handler_id is None:
-            retstr += "No logfile handler."
-        else:
-            retstr += "logfile handler is present."
-        return retstr
-
-
 class ClickLoguru:
     """Creates decorators for use with click to control loguru logging ."""
+
+    class LogState:
+        """Click context object for verbosity, quiet, and logfile info."""
+
+        def __init__(self):
+            """Initialize logging object with default values."""
+            self.verbose = False
+            self.quiet = False
+            self.logfile = True
+            self.logfile_handler_id = None
+            self.subcommand = None
+
+        def __repr__(self):
+            """Print logging state variables."""
+            retstr = f"verbose: {self.verbose}\n"
+            retstr += f"quiet: {self.quiet}\n"
+            retstr += f"logfile: {self.logfile}\n"
+            if self.subcommand is None:
+                retstr += "No subcommand.\n"
+            else:
+                retstr += f"Subcommand is {self.subcommand}.\n"
+            if self.logfile_handler_id is None:
+                retstr += "No logfile handler."
+            else:
+                retstr += "logfile handler is present."
+            return retstr
 
     def __init__(
         self,
@@ -84,7 +83,7 @@ class ClickLoguru:
 
         def callback(ctx, unused_param, value):
             """Set verbose state."""
-            state = ctx.ensure_object(LogState)
+            state = ctx.ensure_object(self.LogState)
             state.verbose = value
             return value
 
@@ -103,7 +102,7 @@ class ClickLoguru:
 
         def callback(ctx, unused_param, value):
             """Set quiet state."""
-            state = ctx.ensure_object(LogState)
+            state = ctx.ensure_object(self.LogState)
             state.quiet = value
             return value
 
@@ -122,7 +121,7 @@ class ClickLoguru:
 
         def callback(ctx, unused_param, value):
             """Set logfile state."""
-            state = ctx.ensure_object(LogState)
+            state = ctx.ensure_object(self.LogState)
             state.logfile = value
             return value
 
@@ -148,7 +147,7 @@ class ClickLoguru:
         def decorator(user_func):
             @functools.wraps(user_func)
             def wrapper(*args, **kwargs):
-                state = cur_ctx().find_object(LogState)
+                state = cur_ctx().find_object(self.LogState)
                 # get the verbose/quiet levels from context
                 if state.verbose:
                     log_level = "DEBUG"
@@ -241,7 +240,7 @@ class ClickLoguru:
         def decorator(user_func):
             @functools.wraps(user_func)
             def wrapper(*args, **kwargs):
-                state = cur_ctx().find_object(LogState)
+                state = cur_ctx().find_object(self.LogState)
                 state.subcommand = cur_ctx().invoked_subcommand
                 return user_func(*args, **kwargs)
 
@@ -251,4 +250,4 @@ class ClickLoguru:
 
     def get_global_options(self):
         """Return dictionary of global options."""
-        return cur_ctx().find_object(LogState)
+        return cur_ctx().find_object(self.LogState)

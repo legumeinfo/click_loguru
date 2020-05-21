@@ -4,13 +4,29 @@ import os
 from pathlib import Path
 
 from click.testing import CliRunner
-from tests.simple import cli
+from . import cli
 
 
 def test_help():
     """Test help command."""
     runner = CliRunner()
     result = runner.invoke(cli, [])
+    print(result.output)
+    assert result.exit_code == 0
+
+
+def test_version():
+    """Test show_context command."""
+    runner = CliRunner()
+    result = runner.invoke(cli, ["--version"])
+    print(result.output)
+    assert result.exit_code == 0
+
+
+def test_show_context():
+    """Test show_context command."""
+    runner = CliRunner()
+    result = runner.invoke(cli, ["show-context"])
     print(result.output)
     assert result.exit_code == 0
 
@@ -30,10 +46,10 @@ def test_quiet(tmp_path):
     os.chdir(tmp_path)
     result = runner.invoke(cli, ["quiet-value"])
     assert result.exit_code == 0
-    assert bool(int(result.output)) == False
+    assert not bool(int(result.output))
     result = runner.invoke(cli, ["-q", "quiet-value"])
     assert result.exit_code == 0
-    assert bool(int(result.output)) == True
+    assert bool(int(result.output))
 
 
 def test_retention(tmp_path):

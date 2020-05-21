@@ -10,7 +10,7 @@ from click_loguru import ClickLoguru
 
 # global constants
 LOG_FILE_RETENTION = 3
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 NAME = "simple"
 
 # define the CLI
@@ -37,6 +37,14 @@ def test_logging():
     logger.info("info message")
     logger.warning("warning message")
     logger.error("error message")
+
+
+@cli.command()
+@click_loguru.init_logger(logfile=False)
+def show_context():
+    "Print value of global quiet option."
+    options = click_loguru.get_global_options()
+    print(f"{options}")
 
 
 @cli.command()

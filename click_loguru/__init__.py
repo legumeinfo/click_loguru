@@ -13,7 +13,7 @@ from click import get_current_context as cur_ctx
 from loguru import logger
 
 # global constants
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 STARTTIME = datetime.now()
 DEFAULT_STDERR_LOG_LEVEL = "INFO"
 DEFAULT_FILE_LOG_LEVEL = "DEBUG"
@@ -219,7 +219,7 @@ class ClickLoguru:
         return decorator
 
     def log_elapsed_time(self):
-        """Log the elapsed time for command."""
+        """Log the elapsed time for (sub)command."""
 
         def decorator(user_func):
             @functools.wraps(user_func)

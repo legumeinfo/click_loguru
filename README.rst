@@ -15,7 +15,7 @@ options are accessible from your application.
 Instantiation is from a single class, ``ClickLoguru``, with the arguments of the name and version
 of your application.  Optional keyworded arguments are the integer ``retention`` to set the number
 of log files retained per-application to values other than the default (4), ``log_dir_parent`` to
-set the location of the log file directory other than its default value of ``./logs``,i
+set the location of the log file directory other than its default value of ``./logs``,
 ``file_log_level`` to set the level of logging to the file other than the default of ``DEBUG``,
 and ``stderr_log_level`` which by default is set to ``INFO``.
 

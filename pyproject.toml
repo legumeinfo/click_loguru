@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "click_loguru"
-version = "0.3.1"
+version = "0.3.2"
 description = "Logging to stderr and file for click applications."
 authors = ["Joel Berendzen <joelb@ncgr.org>"]
 license = "BSD-3-Clause"
@@ -15,7 +15,7 @@ keywords = [
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
-    'Intended Audience :: Software Developers',
+    'Intended Audience :: Developers',
     'License :: OSI Approved :: BSD License',
     'Natural Language :: English',
     'Operating System :: OS Independent',

@@ -29,7 +29,7 @@ def install_with_constraints(session, *args, **kwargs):
         session.install(f"--constraint={requirements.name}", *args, **kwargs)
 
 
-@nox.session(python=["3.7", "3.8", "3.9"])
+@nox.session(python=["3.7", "3.8"])
 def tests(session):
     """Run tests with pytest and pytest-cov."""
     args = session.posargs or ["--cov"]

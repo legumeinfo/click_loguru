@@ -5,7 +5,7 @@ python:
 before_install:
   - pip install poetry
 install:
-  - poetry install --no-dev
+  - poetry install
 script:
   - poetry run nox -s tests
 after_success:

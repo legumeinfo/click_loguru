@@ -13,7 +13,7 @@ from click import get_current_context as cur_ctx
 from loguru import logger
 
 # global constants
-__version__ = "0.3.4"
+__version__ = "0.3.6"
 STARTTIME = datetime.now()
 DEFAULT_STDERR_LOG_LEVEL = "INFO"
 DEFAULT_FILE_LOG_LEVEL = "DEBUG"

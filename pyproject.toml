@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "click_loguru"
-version = "0.3.4"
+version = "0.3.6"
 description = "Logging to stderr and file for click applications."
 authors = ["Joel Berendzen <joelb@ncgr.org>"]
 license = "BSD-3-Clause"

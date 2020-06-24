@@ -39,9 +39,9 @@ pre-commit = "^2.3.0"
 pydocstyle = "^5.0.2"
 isort = {extras = ["pyproject"], version = "^4.3.21"}
 pylint = "^2.5.2"
-poetry-dynamic-versioning = "^0.7.0"
-nox = "^2019.11.9"
 coverage = {extras = ["toml"], version = "^5.1"}
+nox = "^2020.5.24"
+poetry-dynamic-versioning = "^0.8.1"
 
 [tool.black]
 line-length = 79

@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "click_loguru"
-version = "0.3.6"
+version = "1.0.0"
 description = "Logging to stderr and file for click applications."
 authors = ["Joel Berendzen <joelb@ncgr.org>"]
 license = "BSD-3-Clause"
 readme = "README.rst"
 homepage = "https://github.com/legumeinfo/click_loguru"
-documentation = "https://click_loguru.readthedocs.org"
+documentation = "https://github.com/legumeinfo/click_loguru"
 keywords = [
     "logging",
     "click",
@@ -30,6 +30,7 @@ classifiers = [
 python = "^3.6.1"
 click = "^7.1.2"
 loguru = "^0.5.0"
+attrs = "^19.3.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

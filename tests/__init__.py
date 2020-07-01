@@ -10,12 +10,15 @@ from click_loguru import ClickLoguru
 
 # global constants
 LOG_FILE_RETENTION = 3
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 NAME = "simple"
 
 # define the CLI
 click_loguru = ClickLoguru(
-    NAME, VERSION, retention=LOG_FILE_RETENTION, log_dir_parent="tests/data/"
+    NAME,
+    VERSION,
+    retention=LOG_FILE_RETENTION,
+    log_dir_parent="tests/data/logs",
 )
 
 
@@ -40,16 +43,27 @@ def test_logging():
 
 
 @cli.command()
-@click_loguru.init_logger(logfile=False)
+@click_loguru.init_logger()
 def show_context():
     "Print value of global quiet option."
-    options = click_loguru.get_global_options()
-    print(f"{options}")
+    state = click_loguru.get_global_options()
+    print(f"verbose: {state.verbose}")
+    print(f"quiet: {state.quiet}")
+    print(f"logfile: {state.logfile}")
+    if state.subcommand is None:
+        print("No subcommand")
+    else:
+        print(f'Subcommand: "{state.subcommand}"')
+    if state.logfile_handler_id is None:
+        print("No logfile handler.")
+    else:
+        print(f'Logfile path: "{state.logfile_path}"')
+    print(f"{state}")
 
 
 @cli.command()
 @click_loguru.init_logger(logfile=False)
 def quiet_value():
     "Print value of global quiet option."
-    options = click_loguru.get_global_options()
-    print(f"{options.quiet:d}", end="")
+    state = click_loguru.get_global_options()
+    print(f"{state.quiet:d}", end="")

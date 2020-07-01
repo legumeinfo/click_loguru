@@ -1,48 +1,82 @@
 click_loguru
 ============
-``click_loguru`` initializes `loguru <https://github.com/Delgan/loguru/>`_
-for logging to stderr and (optionally) a file for use
-with a `click <https://click.palletsprojects.com/>`_ CLI.
+``click_loguru`` initializes `click <https://click.palletsprojects.com/>`_ CLI-based
+programs for logging to stderr and (optionally) a log file via the
+`loguru <https://github.com/Delgan/loguru/>`_ logger.
 
-If your click application uses subcommands (via ``@click.group()``),
-log files will include the subcommand in the name.
-Log files are numbered, with a retention policy specified.  Log files can be enabled or disabled
-per-subcommand and written to a subdirectory your application specifies.  
+Log file names will include the name of your program and (if your application uses
+subcommands via ``@click.group()``), the name of the subcommand. Log files are 
+(optionally) numbered, with a retention policy specified.  Log files can be
+enabled or disabled per-subcommand and written to a subdirectory that your
+application specifies.  
 
-Global options control verbose, quiet, and logfile creation.  The values of these global
-options are accessible from your application.
+Global CLI options control verbose/quiet levels and log file creation.
+The values of these global options are accessible, along with the path to the
+log file, from your application.
 
-Instantiation is from a single class, ``ClickLoguru``, with the arguments of the name and version
-of your application.  Optional keyworded arguments are the integer ``retention`` to set the number
-of log files retained per-application to values other than the default (4), ``log_dir_parent`` to
-set the location of the log file directory other than its default value of ``./logs``,
-``file_log_level`` to set the level of logging to the file other than the default of ``DEBUG``,
-and ``stderr_log_level`` which by default is set to ``INFO``.
+Instantiation
+-------------
+``click_loguru`` objects are instantiated from the ``ClickLoguru`` class as::
 
-The ``logging_options`` method returns a decorator to be used for the CLI method which defines
-the global options that allows control of ``quiet``, ``verbose``, and ``logfile`` booleans.
+      click_loguru = ClickLoguru(name,
+                                 version,
+                                 retention=4,
+                                 stderr_format_func=None,
+                                 log_dir_parent="./logs",
+                                 file_log_level="DEBUG",
+                                 stderr_log_level="INFO",
+        )
 
-The ``stash_subcommand`` method returns a decorator to be used for the CLI method for applications
-which define subcommands.
+where:
 
-The ``init_logger`` method returns a decorator which must be used for each subcommand.   It allows
-override of the default ``log_dir_parent`` established at instantiation, as well as turning
-off file logging for that command by setting ``logfile`` to ``False``.
+* **name** is the name of your application
+* **version** is the version string of your application
+* **retention** is the log file retention policy.  If set to a non-zero value, the
+  log files will be given by ``logs/NAME[-SUBCOMMAND]_n.log`` where ```NAME`` is the name
+  of your application, ``SUBCOMMAND`` is the group subcommand (if you are using
+  click groups), and ``n`` is an integer number.  The value of ``retention`` specifies
+  the number of log files to be kept.
+* **stderr_format_func** is the format function to be used for messages to stderr, as
+  defined by ``loguru``.  Default is very short, with ``INFO``-level messages having
+  no level name printed.
+* **log_dir_parent** sets the location of the log file directory.  This value may be
+  overridden per-command.
+* **file_log_level**  sets the level of logging to the log file.
+* **stderr_log_level** sets the level of logging to stderr.  This value may be overridden
+  by the ``--quiet`` or ``--verbose`` options.
 
-The ``log_elapsed_time`` method returns a decorator which causes the elapsed time for the subcommand
-to be emitted at the ``DEBUG`` level.
+Methods
+-------
+The ``ClickLoguru`` class defines the following methods:
 
-The ``get_global_options`` method returns the context object associated with the global options.
-The context object is printable.  The attributes of the context object are the booleans ``verbose``,
-``quiet``, and ``logfile``, the string ``subcommand`` showing the subcommand that was invoked,
-and ``logfile_handler_id`` if your code wishes to manipulate the handler directly.
+* **logging_options** is a decorator to be used for your application's CLI function.  This
+  decorator defines the global options that allows control of ``quiet``, ``verbose``,
+  and ``log file`` booleans.
 
-See the file ``tests/__init__.py`` for usage examples.
+* **stash_subcommand** is a  decorator to be used for the CLI method for applications
+  which define subcommands.
+
+* **init_logger** is  a decorator which must be used for each subcommand.   It allows
+  override of the default ``log_dir_parent`` established at instantiation,
+  as well as turning off file logging for that command by setting ``log file`` to ``False``.
+
+* **log_elapsed_time** is a decorator which causes the elapsed time for the (sub)command
+  to be emitted at the ``DEBUG`` level.
+
+* **get_global_options** is a method that returns the context object associated with the
+  global options. The context object is printable.  The attributes of the context object are the booleans ``verbose``,
+  ``quiet``, and ``log file``, the string ``subcommand`` showing the subcommand that was invoked,
+  and ``log file_handler_id`` if your code wishes to manipulate the handler directly.
+
+See the `simple test CLI application
+<https://github.com/legumeinfo/click_loguru/blob/master/tests/__init__.py>`_
+for usage examples.
 
 Prerequisites
 -------------
 Python 3.6 or greater is required.
-This package is tested under Linux and MacOS using Python 3.7.
+This package is tested under Linux using Python 3.8.  This package has
+no dependencies beyond``click`` and ``loguru`` themselves.
 
 
 Project Status
@@ -50,7 +84,11 @@ Project Status
 +-------------------+------------+
 | Latest Release    | |pypi|     |
 +-------------------+------------+
-| GitHub            | |repo|     |
+| Activity          | |repo|     |
++-------------------+------------+
+| Downloads         ||downloads| |
++-------------------+------------+
+| Download Rate     | |dlrate|   |
 +-------------------+------------+
 | License           | |license|  |
 +-------------------+------------+
@@ -62,16 +100,18 @@ Project Status
 +-------------------+------------+
 | Dependencies      | |depend|   |
 +-------------------+------------+
-| Pre-commit        | |precommit||
-+-------------------+------------+
 | Issues            | |issues|   |
++-------------------+------------+
+| Code Style        | |black|    |
++-------------------+------------+
+| Pre-commit        | |precommit||
 +-------------------+------------+
 
 .. |pypi| image:: https://img.shields.io/pypi/v/click_loguru.svg
     :target: https://pypi.python.org/pypi/click_loguru
     :alt: Python package
 
-.. |repo| image:: https://img.shields.io/github/commits-since/legumeinfo/click_loguru/0.1.0.svg
+.. |repo| image:: https://img.shields.io/github/last-commit/legumeinfo/click_loguru
     :target: https://github.com/legumeinfo/click_loguru
     :alt: GitHub repository
 
@@ -91,6 +131,10 @@ Project Status
     :target: https://codecov.io/gh/legumeinfo/click_loguru
     :alt: Codecov.io test coverage
 
+.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square
+    :target: https://github.com/psf/black
+    :alt: Black is the uncompromising Python code formatter
+
 .. |precommit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
     :target: https://github.com/pre-commit/pre-commit
     :alt: pre-commit
@@ -103,3 +147,12 @@ Project Status
 .. |depend| image:: https://api.dependabot.com/badges/status?host=github&repo=legumeinfo/click_loguru
      :target: https://app.dependabot.com/accounts/legumeinfo/repos/236847525
      :alt: dependabot dependencies
+
+
+.. |dlrate| image:: https://img.shields.io/pypi/dm/click_loguru
+    :target: https://pypistats.org/packages/click_loguru
+    :alt: Download stats
+
+.. |downloads| image:: https://pepy.tech/badge/click_loguru
+    :target: https://pepy.tech/project/click_loguru
+    :alt: Download stats

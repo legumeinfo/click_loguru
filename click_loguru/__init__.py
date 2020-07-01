@@ -8,12 +8,14 @@ from datetime import datetime
 from pathlib import Path
 
 # third-party imports
+import attr
 from click import option
 from click import get_current_context as cur_ctx
 from loguru import logger
 
 # global constants
-__version__ = "0.3.6"
+__version__ = "1.0.0"
+__all__ = ["ClickLoguru"]
 STARTTIME = datetime.now()
 DEFAULT_STDERR_LOG_LEVEL = "INFO"
 DEFAULT_FILE_LOG_LEVEL = "DEBUG"
@@ -23,31 +25,16 @@ NO_LEVEL_BELOW = 30  # Don't print level for messages below this level
 class ClickLoguru:
     """Creates decorators for use with click to control loguru logging ."""
 
-    class LogState:
+    @attr.s
+    class LogState(object):
         """Click context object for verbosity, quiet, and logfile info."""
 
-        def __init__(self):
-            """Initialize logging object with default values."""
-            self.verbose = False
-            self.quiet = False
-            self.logfile = True
-            self.logfile_handler_id = None
-            self.subcommand = None
-
-        def __repr__(self):
-            """Print logging state variables."""
-            retstr = f"verbose: {self.verbose}\n"
-            retstr += f"quiet: {self.quiet}\n"
-            retstr += f"logfile: {self.logfile}\n"
-            if self.subcommand is None:
-                retstr += "No subcommand.\n"
-            else:
-                retstr += f"Subcommand is {self.subcommand}.\n"
-            if self.logfile_handler_id is None:
-                retstr += "No logfile handler."
-            else:
-                retstr += "logfile handler is present."
-            return retstr
+        verbose = False
+        quiet = False
+        logfile = True
+        logfile_path = ""
+        logfile_handler_id = None
+        subcommand = None
 
     def __init__(
         self,
@@ -60,12 +47,12 @@ class ClickLoguru:
         stderr_log_level=DEFAULT_STDERR_LOG_LEVEL,
     ):
         """Initialize logging setup info."""
-        self.name = name
-        self.version = version
-        self.retention = retention
-        self.log_dir_parent = log_dir_parent
-        self.file_log_level = file_log_level
-        self.stderr_log_level = stderr_log_level
+        self._name = name
+        self._version = version
+        self._retention = retention
+        self._log_dir_parent = log_dir_parent
+        self._file_log_level = file_log_level
+        self._stderr_log_level = stderr_log_level
         if stderr_format_func is None:
 
             def format_func(msgdict):
@@ -154,7 +141,7 @@ class ClickLoguru:
                 elif state.quiet:
                     log_level = "ERROR"
                 else:
-                    log_level = self.stderr_log_level
+                    log_level = self._stderr_log_level
                 logger.remove()  # remove existing default logger
                 logger.add(
                     sys.stderr, level=log_level, format=self.stderr_format_func
@@ -163,19 +150,18 @@ class ClickLoguru:
                     # If a subcommand was used, log to a file in the
                     # logs/ subdirectory with the subcommand in the file name.
                     if log_dir_parent is not None:
-                        self.log_dir_parent = log_dir_parent
-                    if self.log_dir_parent is None:
-                        log_dir_parent_path = Path(".")
+                        self._log_dir_parent = log_dir_parent
+                    if self._log_dir_parent is None:
+                        log_dir_path = Path(".") / "logs"
                     else:
-                        log_dir_parent_path = Path(self.log_dir_parent)
-                    log_dir_path = log_dir_parent_path / "logs"
+                        log_dir_path = Path(self._log_dir_parent)
                     subcommand = cur_ctx().invoked_subcommand
                     if subcommand is None:
                         subcommand = state.subcommand
                     if subcommand is not None:
-                        logfile_prefix = f"{self.name}-{subcommand}"
+                        logfile_prefix = f"{self._name}-{subcommand}"
                     else:
-                        logfile_prefix = f"{self.name}"
+                        logfile_prefix = f"{self._name}"
                     if log_dir_path.exists():
                         log_numbers = [
                             f.name[len(logfile_prefix) + 1 : -4]
@@ -189,11 +175,11 @@ class ClickLoguru:
                         if len(log_number_ints) > 0:
                             log_number = log_number_ints[-1] + 1
                             if (
-                                self.retention is not None
-                                and len(log_number_ints) > self.retention
+                                self._retention is not None
+                                and len(log_number_ints) > self._retention
                             ):
                                 for remove in log_number_ints[
-                                    : len(log_number_ints) - self.retention
+                                    : len(log_number_ints) - self._retention
                                 ]:
                                     (
                                         log_dir_path
@@ -203,14 +189,19 @@ class ClickLoguru:
                             log_number = 0
                     else:
                         log_number = 0
-                    logfile_path = (
-                        log_dir_path / f"{logfile_prefix}_{log_number}.log"
-                    )
+                    if self._retention == 0:
+                        state.logfile_path = (
+                            log_dir_path / f"{logfile_prefix}.log"
+                        )
+                    else:
+                        state.logfile_path = (
+                            log_dir_path / f"{logfile_prefix}_{log_number}.log"
+                        )
                     state.logfile_handler_id = logger.add(
-                        str(logfile_path), level=self.file_log_level
+                        str(state.logfile_path), level=self._file_log_level
                     )
                 logger.debug(f'Command line: "{" ".join(sys.argv)}"')
-                logger.debug(f"{self.name} version {self.version}")
+                logger.debug(f"{self._name} version {self._version}")
                 logger.debug(f"Run started at {str(STARTTIME)[:-7]}")
                 return user_func(*args, **kwargs)
 

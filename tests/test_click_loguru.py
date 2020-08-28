@@ -62,3 +62,15 @@ def test_retention(tmp_path):
         assert result.exit_code == 0
         log_count += 1
     assert len(list(Path("tests/data/logs").glob("*"))) == 4
+
+
+def test_extra(tmp_path):
+    """Test query of global quiet option."""
+    runner = CliRunner()
+    os.chdir(tmp_path)
+    result = runner.invoke(cli, ["extra-value"])
+    assert result.exit_code == 0
+    assert not bool(int(result.output))
+    result = runner.invoke(cli, ["-e", "extra-value"])
+    assert result.exit_code == 0
+    assert bool(int(result.output))

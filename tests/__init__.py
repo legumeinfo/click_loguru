@@ -10,7 +10,7 @@ from click_loguru import ClickLoguru
 
 # global constants
 LOG_FILE_RETENTION = 3
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 NAME = "simple"
 
 # define the CLI
@@ -25,10 +25,21 @@ click_loguru = ClickLoguru(
 @click_loguru.logging_options
 @click.group()
 @click_loguru.stash_subcommand()
+@click.option(
+    "-e",
+    "--extra",
+    is_flag=True,
+    show_default=True,
+    default=False,
+    help="An extra global option.",
+    callback=click_loguru.user_global_options_callback,
+)
 @click.version_option(version=VERSION, prog_name=NAME)
-def cli(verbose, quiet, logfile):
+def cli(verbose, quiet, logfile, extra):
     """simple -- a simple cli function with logging by loguru."""
-    unused_str = f"verbose: {verbose} quiet: {quiet} logfile: {logfile}"
+    unused_str = (
+        f"verbose: {verbose} quiet: {quiet} logfile: {logfile} extra{extra}"
+    )
 
 
 @cli.command()
@@ -67,3 +78,11 @@ def quiet_value():
     "Print value of global quiet option."
     state = click_loguru.get_global_options()
     print(f"{state.quiet:d}", end="")
+
+
+@cli.command()
+@click_loguru.init_logger(logfile=False)
+def extra_value():
+    "Print value of global quiet option."
+    user_options = click_loguru.get_user_global_options()
+    print(f"{user_options['extra']:d}", end="")

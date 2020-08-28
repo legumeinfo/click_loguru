@@ -68,6 +68,14 @@ The ``ClickLoguru`` class defines the following methods:
   ``quiet``, and ``log file``, the string ``subcommand`` showing the subcommand that was invoked,
   and ``log file_handler_id`` if your code wishes to manipulate the handler directly.
 
+* **user_global_options_callback** is a method to be used as
+  a callback when your code declares a global option.  Values
+  of these global options will be stored in a user global
+  options context dictionary.
+
+* **get_user_global_options** is a method to retrieve a
+  dictionary of values of user global options.
+
 See the `simple test CLI application
 <https://github.com/legumeinfo/click_loguru/blob/master/tests/__init__.py>`_
 for usage examples.

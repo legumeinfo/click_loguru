@@ -14,7 +14,7 @@ from click import get_current_context as cur_ctx
 from loguru import logger
 
 # global constants
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __all__ = ["ClickLoguru"]
 STARTTIME = datetime.now()
 DEFAULT_STDERR_LOG_LEVEL = "INFO"
@@ -25,16 +25,17 @@ NO_LEVEL_BELOW = 30  # Don't print level for messages below this level
 class ClickLoguru:
     """Creates decorators for use with click to control loguru logging ."""
 
-    @attr.s
-    class LogState(object):
+    @attr.s(auto_attribs=True)
+    class LogState:
         """Click context object for verbosity, quiet, and logfile info."""
 
-        verbose = False
-        quiet = False
-        logfile = True
-        logfile_path = ""
-        logfile_handler_id = None
-        subcommand = None
+        verbose: bool = False
+        quiet: bool = False
+        logfile: bool = True
+        logfile_path: Path = None
+        logfile_handler_id: int = None
+        subcommand: str = None
+        user_options: attr.s = {}
 
     def __init__(
         self,
@@ -242,3 +243,13 @@ class ClickLoguru:
     def get_global_options(self):
         """Return dictionary of global options."""
         return cur_ctx().find_object(self.LogState)
+
+    def get_user_global_options(self):
+        """Return dict of global user options."""
+        return cur_ctx().find_object(self.LogState).user_options
+
+    def user_global_options_callback(self, ctx, param, value):
+        """Put user global options in user dict."""
+        state = ctx.ensure_object(self.LogState)
+        state.user_options[param.name] = value
+        return value

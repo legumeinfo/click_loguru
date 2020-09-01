@@ -37,7 +37,7 @@ pytest = "^5.2"
 pytest-cov = "^2.8.1"
 black = {version = "^19.10b0", allow-prereleases = true}
 pre-commit = "^2.3.0"
-pydocstyle = "^5.0.2"
+pydocstyle = "^5.1.1"
 isort = {extras = ["pyproject"], version = "^4.3.21"}
 pylint = "^2.5.2"
 coverage = {extras = ["toml"], version = "^5.1"}

@@ -2,7 +2,8 @@ click_loguru
 ============
 ``click_loguru`` initializes `click <https://click.palletsprojects.com/>`_ CLI-based
 programs for logging to stderr and (optionally) a log file via the
-`loguru <https://github.com/Delgan/loguru/>`_ logger.
+`loguru <https://github.com/Delgan/loguru/>`_ logger.  It can optionally log run time,
+CPU use, and peak memory use of user functions.
 
 Log file names will include the name of your program and (if your application uses
 subcommands via ``@click.group()``), the name of the subcommand. Log files are 
@@ -63,8 +64,9 @@ The ``ClickLoguru`` class defines the following methods:
   override of the default ``log_dir_parent`` established at instantiation,
   as well as turning off file logging for that command by setting ``log file`` to ``False``.
 
-* **log_elapsed_time** is a decorator which causes the elapsed time for the (sub)command
-  to be emitted at the ``DEBUG`` level.
+* **log_elapsed_time** is a decorator which causes the elapsed wall-clock time and
+  CPU time in seconds for the (sub)command
+  to be emitted at the level specified by the ``level=`` argument (``debug`` by default).
 
 * **get_global_options** is a method that returns the context object associated with the
   global options. The context object is printable.  The attributes of the context object are the booleans ``verbose``,
@@ -81,8 +83,15 @@ The ``ClickLoguru`` class defines the following methods:
 
 * **elapsed_timer** is a method that accepts a single argument, ``phase``.
   The next invocation of this method will produce a log entry at ``timer_log_level``
-  showing the elapsed time.  If ``phase`` is ``None``, the next invocation will not
-  produce a message.
+  showing the elapsed wall clock and CPU time.  If ``phase`` is ``None``, 
+  the next invocation will not produce a message.
+
+* **log_peak_memory_use** is a method that results in the peak memory usage for
+  the function and children of the function to be emitted at a level specified
+  by the ``level=`` keyword (``debug`` is default).  This functionality
+  is somewhat expensive in that it requires an additional thread, so the global
+  option ``--profile_mem`` must be enabled.
+
 
 See the `simple test CLI application
 <https://github.com/legumeinfo/click_loguru/blob/master/tests/__init__.py>`_

@@ -6,15 +6,17 @@ import functools
 import sys
 from datetime import datetime
 from pathlib import Path
+from time import process_time
 
 # third-party imports
 import attr
 from click import get_current_context as cur_ctx
 from click import option
 from loguru import logger
+from memory_profiler import memory_usage
 
 # global constants
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 __all__ = ["ClickLoguru"]
 DEFAULT_STDERR_LOG_LEVEL = "INFO"
 DEFAULT_FILE_LOG_LEVEL = "DEBUG"
@@ -32,10 +34,12 @@ class ClickLoguru:
         verbose: bool = False
         quiet: bool = False
         logfile: bool = True
+        profile_mem: bool = True
         logfile_path: Path = None
         logfile_handler_id: int = None
         subcommand: str = None
         user_options: attr.s = {}
+        max_mem: int = 0
 
     def __init__(
         self,
@@ -56,9 +60,10 @@ class ClickLoguru:
         self._file_log_level = file_log_level
         self._stderr_log_level = stderr_log_level
         self.timer_log_level = timer_log_level.upper()
-        self.phase_starts = {}
+        self.start_times = {
+            "Total": {"wall": datetime.now(), "process": process_time()}
+        }
         self.phase = None
-        self.start_time = datetime.now()
         if stderr_format_func is None:
 
             def format_func(msgdict):
@@ -127,11 +132,30 @@ class ClickLoguru:
             callback=callback,
         )(user_func)
 
+    def _profile_mem_option(self, user_func):
+        """Define logfile option."""
+
+        def callback(ctx, unused_param, value):
+            """Set logfile state."""
+            state = ctx.ensure_object(self.LogState)
+            state.profile_mem = value
+            return value
+
+        return option(
+            "--profile_mem",
+            is_flag=True,
+            show_default=True,
+            default=False,
+            help="Profile peak memory use.",
+            callback=callback,
+        )(user_func)
+
     def logging_options(self, user_func):
         """Set all logging options."""
         user_func = self._verbose_option(user_func)
         user_func = self._quiet_option(user_func)
         user_func = self._logfile_option(user_func)
+        user_func = self._profile_mem_option(user_func)
         return user_func
 
     def init_logger(self, log_dir_parent=None, logfile=True):
@@ -209,7 +233,7 @@ class ClickLoguru:
                 logger.debug(f'Command line: "{" ".join(sys.argv)}"')
                 logger.debug(f"{self._name} version {self._version}")
                 logger.debug(
-                    f"Run started at {str(self.start_time)[:SKIP_FIELDS]}"
+                    f"Run started at {str(self.start_times['Total']['wall'])[:SKIP_FIELDS]}"
                 )
                 return user_func(*args, **kwargs)
 
@@ -225,9 +249,37 @@ class ClickLoguru:
             def wrapper(*args, **kwargs):
                 returnobj = user_func(*args, **kwargs)
                 logger.log(
-                    level.upper(),
-                    f"Total elapsed time is {str(datetime.now() - self.start_time)[:SKIP_FIELDS]}",
+                    level.upper(), self._format_time("Total"),
                 )
+                return returnobj
+
+            return wrapper
+
+        return decorator
+
+    def log_peak_memory_use(self, level="debug"):
+        """Log the peak memory use for (sub)command."""
+
+        def decorator(user_func):
+            @functools.wraps(user_func)
+            def wrapper(*args, **kwargs):
+                state = cur_ctx().find_object(self.LogState)
+                if state.profile_mem:
+                    max_mem, returnobj = memory_usage(
+                        (user_func, args, kwargs),
+                        retval=True,
+                        include_children=True,
+                        max_usage=True,
+                        multiprocess=True,
+                        max_iterations=1,
+                    )
+                    state.max_mem = int(max_mem)
+                    logger.log(
+                        level.upper(),
+                        f"Peak total memory use = {state.max_mem} MB.",
+                    )
+                else:
+                    returnobj = user_func(*args, **kwargs)
                 return returnobj
 
             return wrapper
@@ -264,18 +316,26 @@ class ClickLoguru:
 
     def elapsed_time(self, phase):
         """Log the elapsed time of a phase."""
-        now = datetime.now()
-        if self.phase is not None:
-            start_time = self.phase_starts[self.phase]
         old_phase = self.phase
         if phase is None:
             self.phase = None
         else:
             self.phase = phase.capitalize()
-            self.phase_starts[self.phase] = now
+            self.start_times[self.phase] = {
+                "wall": datetime.now(),
+                "process": process_time(),
+            }
         if old_phase is None:
             return
         logger.log(
-            self.timer_log_level,
-            f"{old_phase} elapsed time is {str(now - start_time)[:SKIP_FIELDS]}",
+            self.timer_log_level, self._format_time(old_phase),
         )
+
+    def _format_time(self, phase_name):
+        """Return a formatted elapsed time string."""
+        now = datetime.now()
+        wall = str(datetime.now() - self.start_times[phase_name]["wall"])[
+            :SKIP_FIELDS
+        ]
+        cpu = process_time() - self.start_times[phase_name]["process"]
+        return f"{phase_name} elapsed time is {wall}, {cpu:.1f} s CPU"

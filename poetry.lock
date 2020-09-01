@@ -1,48 +1,48 @@
 [[package]]
-category = "main"
-description = "Asyncio support for PEP-567 contextvars backport."
-marker = "python_version < \"3.7\""
 name = "aiocontextvars"
+version = "0.2.2"
+description = "Asyncio support for PEP-567 contextvars backport."
+category = "main"
 optional = false
 python-versions = ">=3.5"
-version = "0.2.2"
+marker = "python_version < \"3.7\""
 
 [package.dependencies]
 [package.dependencies.contextvars]
-python = "<3.7"
 version = "2.4"
+python = "<3.7"
 
 [[package]]
-category = "dev"
-description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 name = "appdirs"
+version = "1.4.4"
+description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
+category = "dev"
 optional = false
 python-versions = "*"
-version = "1.4.4"
 
 [[package]]
-category = "dev"
-description = "Bash tab completion for argparse"
 name = "argcomplete"
+version = "1.12.0"
+description = "Bash tab completion for argparse"
+category = "dev"
 optional = false
 python-versions = "*"
-version = "1.12.0"
-
-[package.dependencies]
-[package.dependencies.importlib-metadata]
-python = ">=3.6,<3.7"
-version = ">=0.23,<2"
 
 [package.extras]
 test = ["coverage", "flake8", "pexpect", "wheel"]
 
+[package.dependencies]
+[package.dependencies.importlib-metadata]
+version = ">=0.23,<2"
+python = ">=3.6,<3.7"
+
 [[package]]
-category = "dev"
-description = "An abstract syntax tree for Python with inference support."
 name = "astroid"
+version = "2.4.2"
+description = "An abstract syntax tree for Python with inference support."
+category = "dev"
 optional = false
 python-versions = ">=3.5"
-version = "2.4.2"
 
 [package.dependencies]
 lazy-object-proxy = ">=1.4.0,<1.5.0"
@@ -50,25 +50,25 @@ six = ">=1.12,<2.0"
 wrapt = ">=1.11,<2.0"
 
 [package.dependencies.typed-ast]
-python = "<3.8"
 version = ">=1.4.0,<1.5"
+python = "<3.8"
 
 [[package]]
-category = "dev"
-description = "Atomic file writes."
-marker = "sys_platform == \"win32\""
 name = "atomicwrites"
+version = "1.4.0"
+description = "Atomic file writes."
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "1.4.0"
+marker = "sys_platform == \"win32\""
 
 [[package]]
-category = "main"
-description = "Classes Without Boilerplate"
 name = "attrs"
+version = "20.1.0"
+description = "Classes Without Boilerplate"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "20.1.0"
 
 [package.extras]
 dev = ["coverage (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface", "sphinx", "sphinx-rtd-theme", "pre-commit"]
@@ -76,12 +76,16 @@ docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
 tests = ["coverage (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface"]
 
 [[package]]
-category = "dev"
-description = "The uncompromising code formatter."
 name = "black"
+version = "20.8b1"
+description = "The uncompromising code formatter."
+category = "dev"
 optional = false
 python-versions = ">=3.6"
-version = "20.8b1"
+
+[package.extras]
+colorama = ["colorama (>=0.4.3)"]
+d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
 
 [package.dependencies]
 appdirs = "*"
@@ -94,272 +98,282 @@ typed-ast = ">=1.4.0"
 typing-extensions = ">=3.7.4"
 
 [package.dependencies.dataclasses]
-python = "<3.7"
 version = ">=0.6"
-
-[package.extras]
-colorama = ["colorama (>=0.4.3)"]
-d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
+python = "<3.7"
 
 [[package]]
-category = "dev"
-description = "Validate configuration and produce human readable error messages."
 name = "cfgv"
+version = "3.2.0"
+description = "Validate configuration and produce human readable error messages."
+category = "dev"
 optional = false
 python-versions = ">=3.6.1"
-version = "3.2.0"
 
 [[package]]
-category = "main"
-description = "Composable command line interface toolkit"
 name = "click"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 version = "7.1.2"
-
-[[package]]
+description = "Composable command line interface toolkit"
 category = "main"
-description = "Cross-platform colored terminal text."
-marker = "sys_platform == \"win32\""
-name = "colorama"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "0.4.3"
 
 [[package]]
-category = "dev"
-description = "Log formatting with colors!"
+name = "colorama"
+version = "0.4.3"
+description = "Cross-platform colored terminal text."
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+marker = "sys_platform == \"win32\""
+
+[[package]]
 name = "colorlog"
+version = "4.2.1"
+description = "Log formatting with colors!"
+category = "dev"
 optional = false
 python-versions = "*"
-version = "4.2.1"
 
 [package.dependencies]
 colorama = "*"
 
 [[package]]
-category = "main"
-description = "PEP 567 Backport"
-marker = "python_version < \"3.7\""
 name = "contextvars"
+version = "2.4"
+description = "PEP 567 Backport"
+category = "main"
 optional = false
 python-versions = "*"
-version = "2.4"
+marker = "python_version < \"3.7\""
 
 [package.dependencies]
 immutables = ">=0.9"
 
 [[package]]
-category = "dev"
-description = "Code coverage measurement for Python"
 name = "coverage"
+version = "5.2.1"
+description = "Code coverage measurement for Python"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
-version = "5.2.1"
-
-[package.dependencies]
-[package.dependencies.toml]
-optional = true
-version = "*"
 
 [package.extras]
 toml = ["toml"]
 
+[package.dependencies]
+[package.dependencies.toml]
+version = "*"
+optional = true
+
 [[package]]
-category = "dev"
-description = "A backport of the dataclasses module for Python 3.6"
-marker = "python_version < \"3.7\""
 name = "dataclasses"
-optional = false
-python-versions = "*"
 version = "0.6"
-
-[[package]]
+description = "A backport of the dataclasses module for Python 3.6"
 category = "dev"
-description = "Distribution utilities"
-name = "distlib"
 optional = false
 python-versions = "*"
-version = "0.3.1"
+marker = "python_version < \"3.7\""
 
 [[package]]
+name = "distlib"
+version = "0.3.1"
+description = "Distribution utilities"
 category = "dev"
-description = "Dynamic version generation"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "dunamai"
+version = "1.3.0"
+description = "Dynamic version generation"
+category = "dev"
 optional = false
 python-versions = ">=3.5,<4.0"
-version = "1.3.0"
 
 [[package]]
-category = "dev"
-description = "A platform independent file lock."
 name = "filelock"
+version = "3.0.12"
+description = "A platform independent file lock."
+category = "dev"
 optional = false
 python-versions = "*"
-version = "3.0.12"
 
 [[package]]
-category = "dev"
-description = "File identification library for Python"
 name = "identify"
+version = "1.4.30"
+description = "File identification library for Python"
+category = "dev"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
-version = "1.4.30"
 
 [package.extras]
 license = ["editdistance"]
 
 [[package]]
-category = "main"
-description = "Immutable Collections"
-marker = "python_version < \"3.7\""
 name = "immutables"
+version = "0.14"
+description = "Immutable Collections"
+category = "main"
 optional = false
 python-versions = ">=3.5"
-version = "0.14"
+marker = "python_version < \"3.7\""
 
 [[package]]
-category = "dev"
-description = "Read metadata from Python packages"
-marker = "python_version < \"3.8\""
 name = "importlib-metadata"
+version = "1.7.0"
+description = "Read metadata from Python packages"
+category = "dev"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
-version = "1.7.0"
-
-[package.dependencies]
-zipp = ">=0.5"
+marker = "python_version < \"3.8\""
 
 [package.extras]
 docs = ["sphinx", "rst.linker"]
 testing = ["packaging", "pep517", "importlib-resources (>=1.3)"]
 
+[package.dependencies]
+zipp = ">=0.5"
+
 [[package]]
-category = "dev"
-description = "Read resources from Python packages"
-marker = "python_version < \"3.7\""
 name = "importlib-resources"
+version = "3.0.0"
+description = "Read resources from Python packages"
+category = "dev"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
-version = "3.0.0"
-
-[package.dependencies]
-[package.dependencies.zipp]
-python = "<3.8"
-version = ">=0.4"
+marker = "python_version < \"3.7\""
 
 [package.extras]
 docs = ["sphinx", "rst.linker", "jaraco.packaging"]
 
+[package.dependencies]
+[package.dependencies.zipp]
+version = ">=0.4"
+python = "<3.8"
+
 [[package]]
-category = "dev"
-description = "iniconfig: brain-dead simple config-ini parsing"
 name = "iniconfig"
+version = "1.0.1"
+description = "iniconfig: brain-dead simple config-ini parsing"
+category = "dev"
 optional = false
 python-versions = "*"
-version = "1.0.1"
 
 [[package]]
-category = "dev"
-description = "A Python utility / library to sort Python imports."
 name = "isort"
+version = "5.4.2"
+description = "A Python utility / library to sort Python imports."
+category = "dev"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "5.4.2"
 
 [package.extras]
-colors = ["colorama (>=0.4.3,<0.5.0)"]
 pipfile_deprecated_finder = ["pipreqs", "requirementslib", "tomlkit (>=0.5.3)"]
 requirements_deprecated_finder = ["pipreqs", "pip-api"]
+colors = ["colorama (>=0.4.3,<0.5.0)"]
 
 [[package]]
-category = "dev"
-description = "A very fast and expressive template engine."
 name = "jinja2"
+version = "2.11.2"
+description = "A very fast and expressive template engine."
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "2.11.2"
-
-[package.dependencies]
-MarkupSafe = ">=0.23"
 
 [package.extras]
 i18n = ["Babel (>=0.8)"]
 
-[[package]]
-category = "dev"
-description = "A fast and thorough lazy object proxy."
-name = "lazy-object-proxy"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "1.4.3"
+[package.dependencies]
+MarkupSafe = ">=0.23"
 
 [[package]]
-category = "main"
-description = "Python logging made (stupidly) simple"
+name = "lazy-object-proxy"
+version = "1.4.3"
+description = "A fast and thorough lazy object proxy."
+category = "dev"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[[package]]
 name = "loguru"
+version = "0.5.1"
+description = "Python logging made (stupidly) simple"
+category = "main"
 optional = false
 python-versions = ">=3.5"
-version = "0.5.1"
+
+[package.extras]
+dev = ["codecov (>=2.0.15)", "colorama (>=0.3.4)", "flake8 (>=3.7.7)", "isort (>=4.3.20)", "tox (>=3.9.0)", "tox-travis (>=0.12)", "pytest (>=4.6.2)", "pytest-cov (>=2.7.1)", "Sphinx (>=2.2.1)", "sphinx-autobuild (>=0.7.1)", "sphinx-rtd-theme (>=0.4.3)", "black (>=19.3b0)"]
 
 [package.dependencies]
 colorama = ">=0.3.4"
 win32-setctime = ">=1.0.0"
 
 [package.dependencies.aiocontextvars]
-python = "<3.7"
 version = ">=0.2.0"
-
-[package.extras]
-dev = ["codecov (>=2.0.15)", "colorama (>=0.3.4)", "flake8 (>=3.7.7)", "isort (>=4.3.20)", "tox (>=3.9.0)", "tox-travis (>=0.12)", "pytest (>=4.6.2)", "pytest-cov (>=2.7.1)", "Sphinx (>=2.2.1)", "sphinx-autobuild (>=0.7.1)", "sphinx-rtd-theme (>=0.4.3)", "black (>=19.3b0)"]
+python = "<3.7"
 
 [[package]]
-category = "dev"
-description = "Safely add untrusted strings to HTML/XML markup."
 name = "markupsafe"
+version = "1.1.1"
+description = "Safely add untrusted strings to HTML/XML markup."
+category = "dev"
 optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
-version = "1.1.1"
 
 [[package]]
-category = "dev"
-description = "McCabe checker, plugin for flake8"
 name = "mccabe"
-optional = false
-python-versions = "*"
 version = "0.6.1"
+description = "McCabe checker, plugin for flake8"
+category = "dev"
+optional = false
+python-versions = "*"
 
 [[package]]
-category = "dev"
-description = "More routines for operating on iterables, beyond itertools"
+name = "memory-profiler"
+version = "0.57.0"
+description = "A module for monitoring memory usage of a python program"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+psutil = "*"
+
+[[package]]
 name = "more-itertools"
-optional = false
-python-versions = ">=3.5"
 version = "8.5.0"
-
-[[package]]
+description = "More routines for operating on iterables, beyond itertools"
 category = "dev"
-description = "Experimental type system extensions for programs checked with the mypy typechecker."
-name = "mypy-extensions"
-optional = false
-python-versions = "*"
-version = "0.4.3"
-
-[[package]]
-category = "dev"
-description = "Node.js virtual environment builder"
-name = "nodeenv"
-optional = false
-python-versions = "*"
-version = "1.5.0"
-
-[[package]]
-category = "dev"
-description = "Flexible test automation."
-name = "nox"
 optional = false
 python-versions = ">=3.5"
+
+[[package]]
+name = "mypy-extensions"
+version = "0.4.3"
+description = "Experimental type system extensions for programs checked with the mypy typechecker."
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "nodeenv"
+version = "1.5.0"
+description = "Node.js virtual environment builder"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "nox"
 version = "2020.8.22"
+description = "Flexible test automation."
+category = "dev"
+optional = false
+python-versions = ">=3.5"
+
+[package.extras]
+tox_to_nox = ["jinja2", "tox"]
 
 [package.dependencies]
 argcomplete = ">=1.9.4,<2.0"
@@ -368,55 +382,52 @@ py = ">=1.4.0,<2.0.0"
 virtualenv = ">=14.0.0"
 
 [package.dependencies.importlib-metadata]
-python = "<3.8"
 version = "*"
-
-[package.extras]
-tox_to_nox = ["jinja2", "tox"]
+python = "<3.8"
 
 [[package]]
-category = "dev"
-description = "Core utilities for Python packages"
 name = "packaging"
+version = "20.4"
+description = "Core utilities for Python packages"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "20.4"
 
 [package.dependencies]
 pyparsing = ">=2.0.2"
 six = "*"
 
 [[package]]
-category = "dev"
-description = "Utility library for gitignore style pattern matching of file paths."
 name = "pathspec"
+version = "0.8.0"
+description = "Utility library for gitignore style pattern matching of file paths."
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "0.8.0"
 
 [[package]]
-category = "dev"
-description = "plugin and hook calling mechanisms for python"
 name = "pluggy"
+version = "0.13.1"
+description = "plugin and hook calling mechanisms for python"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "0.13.1"
-
-[package.dependencies]
-[package.dependencies.importlib-metadata]
-python = "<3.8"
-version = ">=0.12"
 
 [package.extras]
 dev = ["pre-commit", "tox"]
 
+[package.dependencies]
+[package.dependencies.importlib-metadata]
+version = ">=0.12"
+python = "<3.8"
+
 [[package]]
-category = "dev"
-description = "Plugin for Poetry to enable dynamic versioning based on VCS tags"
 name = "poetry-dynamic-versioning"
+version = "0.8.3"
+description = "Plugin for Poetry to enable dynamic versioning based on VCS tags"
+category = "dev"
 optional = false
 python-versions = ">=3.5,<4.0"
-version = "0.8.3"
 
 [package.dependencies]
 dunamai = ">=1.3,<2.0"
@@ -424,12 +435,12 @@ jinja2 = ">=2.11.1,<3.0.0"
 tomlkit = ">=0.4"
 
 [[package]]
-category = "dev"
-description = "A framework for managing and maintaining multi-language pre-commit hooks."
 name = "pre-commit"
+version = "2.7.1"
+description = "A framework for managing and maintaining multi-language pre-commit hooks."
+category = "dev"
 optional = false
 python-versions = ">=3.6.1"
-version = "2.7.1"
 
 [package.dependencies]
 cfgv = ">=2.0.0"
@@ -440,39 +451,50 @@ toml = "*"
 virtualenv = ">=20.0.8"
 
 [package.dependencies.importlib-metadata]
-python = "<3.8"
 version = "*"
+python = "<3.8"
 
 [package.dependencies.importlib-resources]
-python = "<3.7"
 version = "*"
+python = "<3.7"
 
 [[package]]
-category = "dev"
-description = "library with cross-python path, ini-parsing, io, code, log facilities"
+name = "psutil"
+version = "5.7.2"
+description = "Cross-platform lib for process and system monitoring in Python."
+category = "main"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[package.extras]
+test = ["ipaddress", "mock", "unittest2", "enum34", "pywin32", "wmi"]
+
+[[package]]
 name = "py"
+version = "1.9.0"
+description = "library with cross-python path, ini-parsing, io, code, log facilities"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "1.9.0"
 
 [[package]]
-category = "dev"
-description = "Python docstring style checker"
 name = "pydocstyle"
+version = "5.1.1"
+description = "Python docstring style checker"
+category = "dev"
 optional = false
 python-versions = ">=3.5"
-version = "5.1.1"
 
 [package.dependencies]
 snowballstemmer = "*"
 
 [[package]]
-category = "dev"
-description = "python code static checker"
 name = "pylint"
+version = "2.6.0"
+description = "python code static checker"
+category = "dev"
 optional = false
 python-versions = ">=3.5.*"
-version = "2.6.0"
 
 [package.dependencies]
 astroid = ">=2.4.0,<=2.5"
@@ -482,20 +504,24 @@ mccabe = ">=0.6,<0.7"
 toml = ">=0.7.1"
 
 [[package]]
-category = "dev"
-description = "Python parsing module"
 name = "pyparsing"
+version = "2.4.7"
+description = "Python parsing module"
+category = "dev"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
-version = "2.4.7"
 
 [[package]]
-category = "dev"
-description = "pytest: simple powerful testing with Python"
 name = "pytest"
+version = "6.0.1"
+description = "pytest: simple powerful testing with Python"
+category = "dev"
 optional = false
 python-versions = ">=3.5"
-version = "6.0.1"
+
+[package.extras]
+checkqa_mypy = ["mypy (0.780)"]
+testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xmlschema"]
 
 [package.dependencies]
 atomicwrites = ">=1.0"
@@ -509,99 +535,99 @@ py = ">=1.8.2"
 toml = "*"
 
 [package.dependencies.importlib-metadata]
-python = "<3.8"
 version = ">=0.12"
-
-[package.extras]
-checkqa_mypy = ["mypy (0.780)"]
-testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xmlschema"]
+python = "<3.8"
 
 [[package]]
-category = "dev"
-description = "Pytest plugin for measuring coverage."
 name = "pytest-cov"
+version = "2.10.1"
+description = "Pytest plugin for measuring coverage."
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "2.10.1"
+
+[package.extras]
+testing = ["fields", "hunter", "process-tests (2.0.2)", "six", "pytest-xdist", "virtualenv"]
 
 [package.dependencies]
 coverage = ">=4.4"
 pytest = ">=4.6"
 
-[package.extras]
-testing = ["fields", "hunter", "process-tests (2.0.2)", "six", "pytest-xdist", "virtualenv"]
-
 [[package]]
-category = "dev"
-description = "YAML parser and emitter for Python"
 name = "pyyaml"
+version = "5.3.1"
+description = "YAML parser and emitter for Python"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "5.3.1"
 
 [[package]]
-category = "dev"
-description = "Alternative regular expression module, to replace re."
 name = "regex"
+version = "2020.7.14"
+description = "Alternative regular expression module, to replace re."
+category = "dev"
 optional = false
 python-versions = "*"
-version = "2020.7.14"
 
 [[package]]
-category = "dev"
-description = "Python 2 and 3 compatibility utilities"
 name = "six"
+version = "1.15.0"
+description = "Python 2 and 3 compatibility utilities"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
-version = "1.15.0"
 
 [[package]]
-category = "dev"
-description = "This package provides 26 stemmers for 25 languages generated from Snowball algorithms."
 name = "snowballstemmer"
-optional = false
-python-versions = "*"
 version = "2.0.0"
-
-[[package]]
+description = "This package provides 26 stemmers for 25 languages generated from Snowball algorithms."
 category = "dev"
-description = "Python Library for Tom's Obvious, Minimal Language"
-name = "toml"
 optional = false
 python-versions = "*"
-version = "0.10.1"
 
 [[package]]
+name = "toml"
+version = "0.10.1"
+description = "Python Library for Tom's Obvious, Minimal Language"
 category = "dev"
-description = "Style preserving TOML library"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "tomlkit"
+version = "0.7.0"
+description = "Style preserving TOML library"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "0.7.0"
 
 [[package]]
-category = "dev"
-description = "a fork of Python 2 and 3 ast modules with type comment support"
 name = "typed-ast"
-optional = false
-python-versions = "*"
 version = "1.4.1"
-
-[[package]]
+description = "a fork of Python 2 and 3 ast modules with type comment support"
 category = "dev"
-description = "Backported and Experimental Type Hints for Python 3.5+"
-name = "typing-extensions"
 optional = false
 python-versions = "*"
-version = "3.7.4.3"
 
 [[package]]
+name = "typing-extensions"
+version = "3.7.4.3"
+description = "Backported and Experimental Type Hints for Python 3.5+"
 category = "dev"
-description = "Virtual Python Environment builder"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "virtualenv"
+version = "20.0.31"
+description = "Virtual Python Environment builder"
+category = "dev"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
-version = "20.0.31"
+
+[package.extras]
+docs = ["proselint (>=0.10.2)", "sphinx (>=3)", "sphinx-argparse (>=0.2.5)", "sphinx-rtd-theme (>=0.4.3)", "towncrier (>=19.9.0rc1)"]
+testing = ["coverage (>=5)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", "pytest (>=4)", "pytest-env (>=0.6.2)", "pytest-freezegun (>=0.4.1)", "pytest-mock (>=2)", "pytest-randomly (>=1)", "pytest-timeout (>=1)", "pytest-xdist (>=1.31.0)", "packaging (>=20.0)", "xonsh (>=0.9.16)"]
 
 [package.dependencies]
 appdirs = ">=1.4.3,<2"
@@ -610,54 +636,50 @@ filelock = ">=3.0.0,<4"
 six = ">=1.9.0,<2"
 
 [package.dependencies.importlib-metadata]
-python = "<3.8"
 version = ">=0.12,<2"
+python = "<3.8"
 
 [package.dependencies.importlib-resources]
-python = "<3.7"
 version = ">=1.0"
-
-[package.extras]
-docs = ["proselint (>=0.10.2)", "sphinx (>=3)", "sphinx-argparse (>=0.2.5)", "sphinx-rtd-theme (>=0.4.3)", "towncrier (>=19.9.0rc1)"]
-testing = ["coverage (>=5)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", "pytest (>=4)", "pytest-env (>=0.6.2)", "pytest-freezegun (>=0.4.1)", "pytest-mock (>=2)", "pytest-randomly (>=1)", "pytest-timeout (>=1)", "pytest-xdist (>=1.31.0)", "packaging (>=20.0)", "xonsh (>=0.9.16)"]
+python = "<3.7"
 
 [[package]]
-category = "main"
-description = "A small Python utility to set file creation time on Windows"
-marker = "sys_platform == \"win32\""
 name = "win32-setctime"
+version = "1.0.1"
+description = "A small Python utility to set file creation time on Windows"
+category = "main"
 optional = false
 python-versions = ">=3.5"
-version = "1.0.1"
+marker = "sys_platform == \"win32\""
 
 [package.extras]
 dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 
 [[package]]
-category = "dev"
-description = "Module for decorators, wrappers and monkey patching."
 name = "wrapt"
+version = "1.12.1"
+description = "Module for decorators, wrappers and monkey patching."
+category = "dev"
 optional = false
 python-versions = "*"
-version = "1.12.1"
 
 [[package]]
-category = "dev"
-description = "Backport of pathlib-compatible object wrapper for zip files"
-marker = "python_version < \"3.8\""
 name = "zipp"
+version = "3.1.0"
+description = "Backport of pathlib-compatible object wrapper for zip files"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
-version = "3.1.0"
+marker = "python_version < \"3.8\""
 
 [package.extras]
 docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "e0d86be53f22ed7216deb946d541f50ada54adc751e9d146c11b0f1301b4eb50"
 lock-version = "1.0"
 python-versions = "^3.6.1"
+content-hash = "360d318cab6e8c85e0a0db9af9e93925545f98a98986a8ff6fc86faa6859a61c"
 
 [metadata.files]
 aiocontextvars = [
@@ -863,6 +885,9 @@ mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
 ]
+memory-profiler = [
+    {file = "memory_profiler-0.57.0.tar.gz", hash = "sha256:23b196f91ea9ac9996e30bfab1e82fecc30a4a1d24870e81d1e81625f786a2c3"},
+]
 more-itertools = [
     {file = "more-itertools-8.5.0.tar.gz", hash = "sha256:6f83822ae94818eae2612063a5101a7311e68ae8002005b5e05f03fd74a86a20"},
     {file = "more_itertools-8.5.0-py3-none-any.whl", hash = "sha256:9b30f12df9393f0d28af9210ff8efe48d10c94f73e5daf886f10c4b0b0b4f03c"},
@@ -898,6 +923,19 @@ poetry-dynamic-versioning = [
 pre-commit = [
     {file = "pre_commit-2.7.1-py2.py3-none-any.whl", hash = "sha256:810aef2a2ba4f31eed1941fc270e72696a1ad5590b9751839c90807d0fff6b9a"},
     {file = "pre_commit-2.7.1.tar.gz", hash = "sha256:c54fd3e574565fe128ecc5e7d2f91279772ddb03f8729645fa812fe809084a70"},
+]
+psutil = [
+    {file = "psutil-5.7.2-cp27-none-win32.whl", hash = "sha256:f2018461733b23f308c298653c8903d32aaad7873d25e1d228765e91ae42c3f2"},
+    {file = "psutil-5.7.2-cp27-none-win_amd64.whl", hash = "sha256:66c18ca7680a31bf16ee22b1d21b6397869dda8059dbdb57d9f27efa6615f195"},
+    {file = "psutil-5.7.2-cp35-cp35m-win32.whl", hash = "sha256:5e9d0f26d4194479a13d5f4b3798260c20cecf9ac9a461e718eb59ea520a360c"},
+    {file = "psutil-5.7.2-cp35-cp35m-win_amd64.whl", hash = "sha256:4080869ed93cce662905b029a1770fe89c98787e543fa7347f075ade761b19d6"},
+    {file = "psutil-5.7.2-cp36-cp36m-win32.whl", hash = "sha256:d8a82162f23c53b8525cf5f14a355f5d1eea86fa8edde27287dd3a98399e4fdf"},
+    {file = "psutil-5.7.2-cp36-cp36m-win_amd64.whl", hash = "sha256:0ee3c36428f160d2d8fce3c583a0353e848abb7de9732c50cf3356dd49ad63f8"},
+    {file = "psutil-5.7.2-cp37-cp37m-win32.whl", hash = "sha256:ff1977ba1a5f71f89166d5145c3da1cea89a0fdb044075a12c720ee9123ec818"},
+    {file = "psutil-5.7.2-cp37-cp37m-win_amd64.whl", hash = "sha256:a5b120bb3c0c71dfe27551f9da2f3209a8257a178ed6c628a819037a8df487f1"},
+    {file = "psutil-5.7.2-cp38-cp38-win32.whl", hash = "sha256:10512b46c95b02842c225f58fa00385c08fa00c68bac7da2d9a58ebe2c517498"},
+    {file = "psutil-5.7.2-cp38-cp38-win_amd64.whl", hash = "sha256:68d36986ded5dac7c2dcd42f2682af1db80d4bce3faa126a6145c1637e1b559f"},
+    {file = "psutil-5.7.2.tar.gz", hash = "sha256:90990af1c3c67195c44c9a889184f84f5b2320dce3ee3acbd054e3ba0b4a7beb"},
 ]
 py = [
     {file = "py-1.9.0-py2.py3-none-any.whl", hash = "sha256:366389d1db726cd2fcfc79732e75410e5fe4d31db13692115529d34069a043c2"},

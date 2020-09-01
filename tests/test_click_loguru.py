@@ -47,6 +47,7 @@ def test_help():
     runner = CliRunner()
     result = runner.invoke(cli, [])
     assert result.exit_code == 0
+    print(result.output)
 
 
 @print_docstring()
@@ -141,3 +142,24 @@ def test_elapsed_timing(tmp_path):
             assert "Second elapsed time" in line
         elif i == 2:
             assert "Total elapsed time" in line
+
+
+def get_mem_use_from_logstring(logstring):
+    """Parse peak memory use from log string."""
+    return int(logstring.split()[5])
+
+
+@print_docstring()
+def test_memory_profiling(tmp_path):
+    """Test peak memory use logging."""
+    runner = CliRunner()
+    os.chdir(tmp_path)
+    mem_inc_MB = 10
+    result = runner.invoke(cli, ["--profile_mem", "log-memory-use", "0"])
+    assert "Peak total memory use" in result.output
+    base_mem_size = get_mem_use_from_logstring(result.output)
+    result = runner.invoke(
+        cli, ["--profile_mem", "log-memory-use", str(mem_inc_MB)]
+    )
+    inc_mem_size = get_mem_use_from_logstring(result.output)
+    assert (inc_mem_size - base_mem_size - mem_inc_MB) <= 1

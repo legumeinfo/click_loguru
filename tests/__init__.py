@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """An extremely simple command-line application."""
 # standard library imports
+import array
 from time import sleep
 
 # third-party imports
@@ -41,7 +42,7 @@ click_loguru = ClickLoguru(
     callback=click_loguru.user_global_options_callback,
 )
 @click.version_option(version=VERSION, prog_name=NAME)
-def cli(verbose, quiet, logfile, extra):
+def cli(verbose, quiet, logfile, profile_mem, extra):
     """simple -- a simple cli function with logging by loguru."""
     unused_str = (
         f"verbose: {verbose} quiet: {quiet} logfile: {logfile} extra{extra}"
@@ -114,3 +115,14 @@ def log_elapsed_time():
     click_loguru.elapsed_time("second")
     sleep(2)
     click_loguru.elapsed_time(None)
+
+
+@cli.command()
+@click_loguru.init_logger()
+@click_loguru.log_peak_memory_use(level="info")
+@click.argument("alloc_size", type=int)
+def log_memory_use(alloc_size):
+    """Print elapsed time in command."""
+    arr = array.array("b")
+    for i in range(alloc_size * 1024 * 1024):
+        arr.append(0)

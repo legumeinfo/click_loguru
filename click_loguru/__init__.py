@@ -9,17 +9,17 @@ from pathlib import Path
 
 # third-party imports
 import attr
-from click import option
 from click import get_current_context as cur_ctx
+from click import option
 from loguru import logger
 
 # global constants
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 __all__ = ["ClickLoguru"]
-STARTTIME = datetime.now()
 DEFAULT_STDERR_LOG_LEVEL = "INFO"
 DEFAULT_FILE_LOG_LEVEL = "DEBUG"
 NO_LEVEL_BELOW = 30  # Don't print level for messages below this level
+SKIP_FIELDS = -7
 
 
 class ClickLoguru:
@@ -46,6 +46,7 @@ class ClickLoguru:
         log_dir_parent=None,
         file_log_level=DEFAULT_FILE_LOG_LEVEL,
         stderr_log_level=DEFAULT_STDERR_LOG_LEVEL,
+        timer_log_level="debug",
     ):
         """Initialize logging setup info."""
         self._name = name
@@ -54,6 +55,10 @@ class ClickLoguru:
         self._log_dir_parent = log_dir_parent
         self._file_log_level = file_log_level
         self._stderr_log_level = stderr_log_level
+        self.timer_log_level = timer_log_level.upper()
+        self.phase_starts = {}
+        self.phase = None
+        self.start_time = datetime.now()
         if stderr_format_func is None:
 
             def format_func(msgdict):
@@ -203,22 +208,25 @@ class ClickLoguru:
                     )
                 logger.debug(f'Command line: "{" ".join(sys.argv)}"')
                 logger.debug(f"{self._name} version {self._version}")
-                logger.debug(f"Run started at {str(STARTTIME)[:-7]}")
+                logger.debug(
+                    f"Run started at {str(self.start_time)[:SKIP_FIELDS]}"
+                )
                 return user_func(*args, **kwargs)
 
             return wrapper
 
         return decorator
 
-    def log_elapsed_time(self):
+    def log_elapsed_time(self, level="debug"):
         """Log the elapsed time for (sub)command."""
 
         def decorator(user_func):
             @functools.wraps(user_func)
             def wrapper(*args, **kwargs):
                 returnobj = user_func(*args, **kwargs)
-                logger.debug(
-                    f"Elapsed time is {str(datetime.now() - STARTTIME)[:-7]}"
+                logger.log(
+                    level.upper(),
+                    f"Total elapsed time is {str(datetime.now() - self.start_time)[:SKIP_FIELDS]}",
                 )
                 return returnobj
 
@@ -253,3 +261,21 @@ class ClickLoguru:
         state = ctx.ensure_object(self.LogState)
         state.user_options[param.name] = value
         return value
+
+    def elapsed_time(self, phase):
+        """Log the elapsed time of a phase."""
+        now = datetime.now()
+        if self.phase is not None:
+            start_time = self.phase_starts[self.phase]
+        old_phase = self.phase
+        if phase is None:
+            self.phase = None
+        else:
+            self.phase = phase.capitalize()
+            self.phase_starts[self.phase] = now
+        if old_phase is None:
+            return
+        logger.log(
+            self.timer_log_level,
+            f"{old_phase} elapsed time is {str(now - start_time)[:SKIP_FIELDS]}",
+        )

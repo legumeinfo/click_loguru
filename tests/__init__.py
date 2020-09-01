@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """An extremely simple command-line application."""
+# standard library imports
+from time import sleep
 
 # third-party imports
 import click
@@ -7,6 +9,9 @@ from loguru import logger
 
 # module imports
 from click_loguru import ClickLoguru
+
+# self imports
+from .other_module import other_module_levels
 
 # global constants
 LOG_FILE_RETENTION = 3
@@ -19,6 +24,7 @@ click_loguru = ClickLoguru(
     VERSION,
     retention=LOG_FILE_RETENTION,
     log_dir_parent="tests/data/logs",
+    timer_log_level="info",
 )
 
 
@@ -44,13 +50,23 @@ def cli(verbose, quiet, logfile, extra):
 
 @cli.command()
 @click_loguru.init_logger()
-@click_loguru.log_elapsed_time()
-def test_logging():
+def levels():
     """Log at different severity levels."""
     logger.debug("debug message")
     logger.info("info message")
     logger.warning("warning message")
     logger.error("error message")
+    state = click_loguru.get_global_options()
+    print(f"logfile_path: {state.logfile_path}")
+
+
+@cli.command()
+@click_loguru.init_logger()
+def other_module():
+    """Log from another module."""
+    other_module_levels()
+    state = click_loguru.get_global_options()
+    print(f"logfile_path: {state.logfile_path}")
 
 
 @cli.command()
@@ -86,3 +102,15 @@ def extra_value():
     "Print value of global quiet option."
     user_options = click_loguru.get_user_global_options()
     print(f"{user_options['extra']:d}", end="")
+
+
+@cli.command()
+@click_loguru.init_logger()
+@click_loguru.log_elapsed_time(level="info")
+def log_elapsed_time():
+    """Print elapsed time in command."""
+    click_loguru.elapsed_time("first")
+    sleep(1)
+    click_loguru.elapsed_time("second")
+    sleep(2)
+    click_loguru.elapsed_time(None)

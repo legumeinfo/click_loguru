@@ -25,6 +25,7 @@ Instantiation
                                  log_dir_parent="./logs",
                                  file_log_level="DEBUG",
                                  stderr_log_level="INFO",
+                                 timer_log_level="debug",
         )
 
 where:
@@ -44,6 +45,8 @@ where:
 * **file_log_level**  sets the level of logging to the log file.
 * **stderr_log_level** sets the level of logging to stderr.  This value may be overridden
   by the ``--quiet`` or ``--verbose`` options.
+* **timer_log_level** is the level at which ``elapsed_time`` results will be logged.
+
 
 Methods
 -------
@@ -75,6 +78,11 @@ The ``ClickLoguru`` class defines the following methods:
 
 * **get_user_global_options** is a method to retrieve a
   dictionary of values of user global options.
+
+* **elapsed_timer** is a method that accepts a single argument, ``phase``.
+  The next invocation of this method will produce a log entry at ``timer_log_level``
+  showing the elapsed time.  If ``phase`` is ``None``, the next invocation will not
+  produce a message.
 
 See the `simple test CLI application
 <https://github.com/legumeinfo/click_loguru/blob/master/tests/__init__.py>`_

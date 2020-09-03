@@ -100,37 +100,37 @@ for usage examples.
 Prerequisites
 -------------
 Python 3.6 or greater is required.
-This package is tested under Linux using Python 3.8.  This package has
-no dependencies beyond``click`` and ``loguru`` themselves.
+This package is tested under Linux using Python 3.8. Besides  ``click`` and ``loguru``
+themselves, this package depends upon ``memory_profiler`` and ``attrs``.
 
 
 Project Status
 --------------
-+-------------------+------------+
-| Latest Release    | |pypi|     |
-+-------------------+------------+
-| Activity          | |repo|     |
-+-------------------+------------+
-| Downloads         ||downloads| |
-+-------------------+------------+
-| Download Rate     | |dlrate|   |
-+-------------------+------------+
-| License           | |license|  |
-+-------------------+------------+
-| Travis Build      | |travis|   |
-+-------------------+------------+
-| Coverage          | |coverage| |
-+-------------------+------------+
-| Code Grade        | |codacy|   |
-+-------------------+------------+
-| Dependencies      | |depend|   |
-+-------------------+------------+
-| Issues            | |issues|   |
-+-------------------+------------+
-| Code Style        | |black|    |
-+-------------------+------------+
-| Pre-commit        | |precommit||
-+-------------------+------------+
++-------------------+-------------+
+| Latest Release    | |pypi|      |
++-------------------+-------------+
+| Activity          | |repo|      |
++-------------------+-------------+
+| Downloads         | |downloads| |
++-------------------+-------------+
+| Download Rate     | |dlrate|    |
++-------------------+-------------+
+| License           | |license|   |
++-------------------+-------------+
+| Travis Build      | |travis|    |
++-------------------+-------------+
+| Coverage          | |coverage|  |
++-------------------+-------------+
+| Code Grade        | |codacy|    |
++-------------------+-------------+
+| Dependencies      | |depend|    |
++-------------------+-------------+
+| Issues            | |issues|    |
++-------------------+-------------+
+| Code Style        | |black|     |
++-------------------+-------------+
+| Pre-commit        | |precommit| |
++-------------------+-------------+
 
 .. |pypi| image:: https://img.shields.io/pypi/v/click_loguru.svg
     :target: https://pypi.python.org/pypi/click_loguru

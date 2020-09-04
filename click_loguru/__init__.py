@@ -16,7 +16,7 @@ from loguru import logger
 from memory_profiler import memory_usage
 
 # global constants
-__version__ = "1.3.3"
+__version__ = "1.3.4"
 __all__ = ["ClickLoguru"]
 DEFAULT_STDERR_LOG_LEVEL = "INFO"
 DEFAULT_FILE_LOG_LEVEL = "DEBUG"
@@ -338,4 +338,4 @@ class ClickLoguru:
             :SKIP_FIELDS
         ]
         cpu = process_time() - self.start_times[phase_name]["process"]
-        return f"{phase_name} elapsed time is {wall}, {cpu:.1f} s CPU"
+        return f"{phase_name} elapsed time is {wall}, {cpu:.1f} s process CPU"

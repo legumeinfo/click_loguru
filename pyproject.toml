@@ -39,7 +39,7 @@ pytest-cov = "^2.8.1"
 black = {version = "^20.8b1", allow-prereleases = true}
 pre-commit = "^2.3.0"
 pydocstyle = "^5.0.2"
-isort = {extras = ["pyproject"], version = "^5.4.2"}
+isort = {extras = ["pyproject"], version = "^5.7.0"}
 pylint = "^2.5.2"
 coverage = {extras = ["toml"], version = "^5.1"}
 nox = "^2020.5.24"

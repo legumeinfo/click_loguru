@@ -27,9 +27,9 @@ def print_docstring():
 
 def level_checker(logfile_path):
     """Check for expected messages at different log levels."""
-    with logfile_path.open("r") as fh:
+    with logfile_path.open("r") as filehandle:
         line_no = 0
-        for line in fh.read().split("\n"):
+        for line in filehandle.read().split("\n"):
             if line_no == 3:
                 assert "debug message" in line
             elif line_no == 4:
@@ -154,12 +154,12 @@ def test_memory_profiling(tmp_path):
     """Test peak memory use logging."""
     runner = CliRunner()
     os.chdir(tmp_path)
-    mem_inc_MB = 10
+    mem_inc_mb = 10
     result = runner.invoke(cli, ["--profile_mem", "log-memory-use", "0"])
     assert "Peak total memory use" in result.output
     base_mem_size = get_mem_use_from_logstring(result.output)
     result = runner.invoke(
-        cli, ["--profile_mem", "log-memory-use", str(mem_inc_MB)]
+        cli, ["--profile_mem", "log-memory-use", str(mem_inc_mb)]
     )
     inc_mem_size = get_mem_use_from_logstring(result.output)
-    assert (inc_mem_size - base_mem_size - mem_inc_MB) <= 1
+    assert (inc_mem_size - base_mem_size - mem_inc_mb) <= 1

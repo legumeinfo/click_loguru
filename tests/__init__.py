@@ -45,7 +45,8 @@ click_loguru = ClickLoguru(
 def cli(verbose, quiet, logfile, profile_mem, extra):
     """simple -- a simple cli function with logging by loguru."""
     unused_str = (
-        f"verbose: {verbose} quiet: {quiet} logfile: {logfile} extra{extra}"
+        f"verbose: {verbose} quiet: {quiet}" +
+        f" logfile: {logfile} profile_mem: {profile_mem} extra{extra}"
     )
 
 
@@ -124,5 +125,5 @@ def log_elapsed_time():
 def log_memory_use(alloc_size):
     """Print elapsed time in command."""
     arr = array.array("b")
-    for i in range(alloc_size * 1024 * 1024):
+    for unused_i in range(alloc_size * 1024 * 1024):
         arr.append(0)

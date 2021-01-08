@@ -16,7 +16,7 @@ from loguru import logger
 from memory_profiler import memory_usage
 
 # global constants
-__version__ = "1.3.4"
+__version__ = "1.3.5"
 __all__ = ["ClickLoguru"]
 DEFAULT_STDERR_LOG_LEVEL = "INFO"
 DEFAULT_FILE_LOG_LEVEL = "DEBUG"
@@ -333,7 +333,6 @@ class ClickLoguru:
 
     def _format_time(self, phase_name):
         """Return a formatted elapsed time string."""
-        now = datetime.now()
         wall = str(datetime.now() - self.start_times[phase_name]["wall"])[
             :SKIP_FIELDS
         ]

@@ -19,9 +19,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install poetry
-        poetry install --no-dev
+        poetry install
     - name: Test with nox
-      - uses: actions/checkout@1.0.0
-      - uses: excitedleigh/setup-nox@1.0.0
       run: |
         poetry run nox -s tests

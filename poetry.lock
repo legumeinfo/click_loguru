@@ -309,11 +309,11 @@ python-versions = "*"
 
 [[package]]
 name = "memory-profiler"
-version = "0.57.0"
+version = "0.58.0"
 description = "A module for monitoring memory usage of a python program"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.4"
 
 [package.dependencies]
 psutil = "*"
@@ -624,7 +624,7 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "84ea97333dc98c6de2b7507858df72cce0323ae974a514347dab1f294e99a98a"
+content-hash = "506625247ecd60e524b7070d8d1e3f67ae5774faeff7d7cb8d7dcebc2065c4a8"
 
 [metadata.files]
 aiocontextvars = [
@@ -845,7 +845,7 @@ mccabe = [
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
 ]
 memory-profiler = [
-    {file = "memory_profiler-0.57.0.tar.gz", hash = "sha256:23b196f91ea9ac9996e30bfab1e82fecc30a4a1d24870e81d1e81625f786a2c3"},
+    {file = "memory_profiler-0.58.0.tar.gz", hash = "sha256:01385ac0fec944fcf7969814ec4406c6d8a9c66c079d09276723c5a7680f44e5"},
 ]
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},

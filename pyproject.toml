@@ -35,7 +35,7 @@ attrs = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.0"
-pytest-cov = "^2.8.1"
+pytest-cov = "^2.12.1"
 black = {version = "^20.8b1", allow-prereleases = true}
 pre-commit = "^2.3.0"
 pydocstyle = "^5.0.2"

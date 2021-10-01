@@ -37,7 +37,7 @@ attrs = "^20.1.0"
 pytest = "^6.0"
 pytest-cov = "^2.8.1"
 black = {version = "^20.8b1", allow-prereleases = true}
-pre-commit = "^2.3.0"
+pre-commit = "^2.15.0"
 pydocstyle = "^5.0.2"
 isort = {extras = ["pyproject"], version = "^5.4.2"}
 pylint = "^2.5.2"
